@@ -1,0 +1,7 @@
+{
+  "name": "Freshfolds Laundry & Dry Cleaning - Voice Concierge Alex",
+  "description": "Meet Alex, your voice concierge for Freshfolds Laundry in Ikorodu, Lagos. Book pickups, get pricing estimates in Naira (₦), and claim ₦1,500 off first orders of clothes exceeding 15 pieces.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
