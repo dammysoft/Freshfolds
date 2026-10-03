@@ -20,15 +20,21 @@ import {
   Send,
   Building2,
   BadgeCheck,
-  Check
+  Check,
+  LayoutDashboard
 } from "lucide-react";
-import { FreshFoldLogo } from "./FreshFoldLogo";
+import { FreshcareLogo } from "./FreshFoldLogo";
+import { BusinessFlowArchitecture } from "./BusinessFlowArchitecture";
 
 interface WebsiteOverviewProps {
   onStartCall: () => void;
   onOpenPricing: () => void;
   onOpenTracker: () => void;
   onOpenSop: () => void;
+  onOpenDashboard?: () => void;
+  onOpenOrderFunnel?: () => void;
+  onOpenWhatsAppFlow?: () => void;
+  onOpenAgentRAG?: () => void;
 }
 
 export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
@@ -36,6 +42,10 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
   onOpenPricing,
   onOpenTracker,
   onOpenSop,
+  onOpenDashboard,
+  onOpenOrderFunnel,
+  onOpenWhatsAppFlow,
+  onOpenAgentRAG,
 }) => {
   return (
     <div className="space-y-12">
@@ -47,7 +57,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
         <div className="relative z-10 max-w-4xl space-y-6">
           {/* Logo representation matching Feasibility Report */}
           <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 inline-block backdrop-blur-sm">
-            <FreshFoldLogo size="lg" showTagline={true} />
+            <FreshcareLogo size="lg" showTagline={true} />
           </div>
 
           <div className="space-y-3">
@@ -125,7 +135,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
               StoryBrand 3-Step Plan
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight">
-              How FreshFold Works for You
+              How Freshcare Works for You
             </h2>
           </div>
           <p className="text-xs text-slate-400 max-w-md">
@@ -153,7 +163,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
             </div>
             <h3 className="text-base font-bold text-white">We Collect & Tag</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Our rider arrives at your doorstep in Ikorodu. Items are counted in front of you, tagged with waterproof sequential tags (FF-series), and photo-documented on WhatsApp.
+              Our rider arrives at your doorstep in Ikorodu. Items are counted in front of you, tagged with waterproof sequential tags (FC-series), and photo-documented on WhatsApp.
             </p>
             <div className="text-[11px] text-teal-400 font-mono">
               Zero-Loss Guarantee & Proof of Intake
@@ -166,13 +176,47 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
             </div>
             <h3 className="text-base font-bold text-white">Receive Fresh & Folded</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Washed with 9 professional chemicals, vacuum suction pressed, neatly folded, and delivered in a branded waterproof FreshFold protective garment bag within 24–48 hours.
+              Washed with 9 professional chemicals, vacuum suction pressed, neatly folded, and delivered in a branded waterproof Freshcare protective garment bag within 24–48 hours.
             </p>
             <div className="text-[11px] text-teal-400 font-mono">
               Pay on Delivery after Inspection
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Freshcare End-to-End Business Flow Architecture */}
+      <section className="space-y-6 pt-4 border-t border-slate-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-bold text-teal-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-teal-400" />
+              <span>Enterprise Business Architecture</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Freshcare Omnichannel Architecture & Operational Pipeline
+            </h2>
+          </div>
+          {onOpenDashboard && (
+            <button
+              onClick={onOpenDashboard}
+              className="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-teal-500/20 self-start sm:self-auto"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span>Launch Live Operations Dashboard</span>
+            </button>
+          )}
+        </div>
+
+        <BusinessFlowArchitecture
+          onNavigateToDashboard={onOpenDashboard}
+          onNavigateToCall={onStartCall}
+          onNavigateToPricing={onOpenPricing}
+          onNavigateToTracker={onOpenTracker}
+          onNavigateToOrderFunnel={onOpenOrderFunnel}
+          onNavigateToWhatsAppFlow={onOpenWhatsAppFlow}
+          onNavigateToAgentRAG={onOpenAgentRAG}
+        />
       </section>
 
       {/* Target Customer Segments & Bundles (Section 7.2 & 9.6 of Feasibility Report) */}
@@ -307,7 +351,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
             Section 3: Vision, Mission & Core Values
           </div>
           <h2 className="text-2xl font-bold text-white tracking-tight">
-            Our Guiding Values at FreshFold
+            Our Guiding Values at Freshcare
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-2xl">
             "To deliver clean, pressed, and perfectly folded laundry — on time, every time — with a service experience that turns first-time customers into loyal weekly subscribers."
@@ -387,7 +431,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
             Our Dedicated Operational Team
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-            "Every role in this chain exists for one reason: to ensure that every garment entrusted to FreshFold is returned clean, correctly starched, perfectly pressed, on time, and with zero damage."
+            "Every role in this chain exists for one reason: to ensure that every garment entrusted to Freshcare is returned clean, correctly starched, perfectly pressed, on time, and with zero damage."
           </p>
         </div>
 
@@ -524,7 +568,7 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
             </div>
             <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-2">
               <span className="font-mono text-teal-400 font-bold">2.</span>
-              <span>FreshFold is liable for garments damaged during washing — compensation equals full replacement cost.</span>
+              <span>Freshcare is liable for garments damaged during washing — compensation equals full replacement cost.</span>
             </div>
             <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-2">
               <span className="font-mono text-teal-400 font-bold">3.</span>
@@ -544,10 +588,10 @@ export const WebsiteOverview: React.FC<WebsiteOverviewProps> = ({
           "Stay in the game long enough to win."
         </h3>
         <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto italic">
-          "You handle life. We handle the laundry."
+          "Every fold tells you we care. You handle life. We handle the laundry."
         </p>
         <p className="text-xs text-teal-400 font-mono">
-          Prepared by Azeez Saheed Oluwadamilola (Dammy) · FreshFold Laundry & Dry Cleaning Services
+          Prepared by Azeez Saheed Oluwadamilola (Dammy) · Freshcare Laundry and Drycleaning Services
         </p>
 
         <div className="pt-2 flex flex-wrap justify-center gap-3">

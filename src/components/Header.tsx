@@ -1,10 +1,10 @@
 import React from "react";
-import { Sparkles, Phone, Clock, ShieldCheck, MapPin, Tag, MessageSquare, LayoutGrid } from "lucide-react";
-import { FreshFoldLogo } from "./FreshFoldLogo";
+import { Sparkles, Phone, Clock, ShieldCheck, MapPin, Tag, MessageSquare, LayoutGrid, LayoutDashboard, ShoppingCart, Send, Wrench, Video, BrainCircuit } from "lucide-react";
+import { FreshcareLogo, FreshFoldLogo } from "./FreshFoldLogo";
 
 interface HeaderProps {
-  activeTab: "overview" | "call" | "booking" | "pricing" | "sop";
-  setActiveTab: (tab: "overview" | "call" | "booking" | "pricing" | "sop") => void;
+  activeTab: "overview" | "funnel" | "whatsapp_agent" | "agent_rag" | "content_pipeline" | "data_pipeline" | "call" | "booking" | "pricing" | "sop" | "dashboard";
+  setActiveTab: (tab: "overview" | "funnel" | "whatsapp_agent" | "agent_rag" | "content_pipeline" | "data_pipeline" | "call" | "booking" | "pricing" | "sop" | "dashboard") => void;
   isCallActive: boolean;
   onCallAlexClick: () => void;
   discountClaimed: boolean;
@@ -48,35 +48,122 @@ export const Header: React.FC<HeaderProps> = ({
         <div 
           onClick={() => setActiveTab("overview")}
           className="cursor-pointer group flex items-center gap-3"
-          title="FreshFold Laundry & Dry Cleaning Services"
+          title="Freshcare Laundry and Drycleaning Services"
         >
-          <FreshFoldLogo size="md" />
+          <FreshcareLogo size="md" />
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+        <nav className="hidden xl:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "overview"
-                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
                 : "text-slate-300 hover:text-white hover:bg-slate-800/60"
             }`}
           >
             <LayoutGrid className="w-3.5 h-3.5" />
-            Website Overview
+            Website
+          </button>
+
+          <button
+            onClick={() => setActiveTab("funnel")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "funnel"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <ShoppingCart className="w-3.5 h-3.5 text-teal-400" />
+            <span>Order Flow</span>
+            <span className="text-[10px] bg-teal-400/20 text-teal-300 px-1 py-0.2 rounded border border-teal-400/30">
+              8-Step
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("whatsapp_agent")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "whatsapp_agent"
+                ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+            <span>WhatsApp Agent</span>
+            <span className="text-[10px] bg-emerald-400/20 text-emerald-300 px-1 py-0.2 rounded border border-emerald-400/30">
+              Flow
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("agent_rag")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "agent_rag"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <Wrench className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Tools & RAG</span>
+            <span className="text-[10px] bg-teal-400/20 text-teal-300 px-1 py-0.2 rounded border border-teal-400/30">
+              7 Tools
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("content_pipeline")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "content_pipeline"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <Video className="w-3.5 h-3.5 text-pink-400" />
+            <span>Content Studio</span>
+            <span className="text-[10px] bg-pink-400/20 text-pink-300 px-1 py-0.2 rounded border border-pink-400/30">
+              Publish
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("data_pipeline")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "data_pipeline"
+                ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <BrainCircuit className="w-3.5 h-3.5 text-emerald-300" />
+            <span>Data & AI</span>
+            <span className="text-[10px] bg-emerald-400/20 text-emerald-300 px-1 py-0.2 rounded border border-emerald-400/30">
+              Insights
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("dashboard")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === "dashboard"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+            }`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5 text-teal-300" />
+            <span>CRM & Ops</span>
           </button>
 
           <button
             onClick={() => setActiveTab("call")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "call"
-                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
                 : "text-slate-300 hover:text-white hover:bg-slate-800/60"
             }`}
           >
             <Phone className="w-3.5 h-3.5" />
-            Voice Concierge
+            Concierge
             {isCallActive && (
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             )}
@@ -84,27 +171,27 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             onClick={() => setActiveTab("pricing")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "pricing"
-                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
                 : "text-slate-300 hover:text-white hover:bg-slate-800/60"
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            Fixed Pricing Menu (₦)
+            Pricing Menu (₦)
           </button>
 
           <button
             onClick={() => setActiveTab("booking")}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "booking"
-                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25"
+                ? "bg-teal-500 text-white shadow-md shadow-teal-500/25 font-bold"
                 : "text-slate-300 hover:text-white hover:bg-slate-800/60"
             }`}
           >
-            <span>Live Dispatch & Tracking</span>
+            <span>Live Dispatch</span>
             {discountClaimed && (
-              <span className="text-[10px] bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded-full border border-amber-400/30">
+              <span className="text-[10px] bg-amber-400/20 text-amber-300 px-1 py-0.2 rounded-full border border-amber-400/30">
                 -₦1,500
               </span>
             )}
@@ -119,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
-            SOP & Quality Standards
+            SOP
           </button>
         </nav>
 
@@ -145,26 +232,58 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile Nav Bar */}
-      <div className="flex lg:hidden items-center justify-around border-t border-slate-800/60 bg-slate-900/60 px-2 py-1.5">
+      <div className="flex lg:hidden items-center justify-around border-t border-slate-800/60 bg-slate-900/60 px-2 py-1.5 overflow-x-auto">
         <button
           onClick={() => setActiveTab("overview")}
-          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
             activeTab === "overview" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
           }`}
         >
           <LayoutGrid className="w-3.5 h-3.5" /> Overview
         </button>
         <button
+          onClick={() => setActiveTab("dashboard")}
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
+            activeTab === "dashboard" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
+          }`}
+        >
+          <LayoutDashboard className="w-3.5 h-3.5" /> Ops
+        </button>
+        <button
           onClick={() => setActiveTab("call")}
-          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
             activeTab === "call" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
           }`}
         >
-          <Phone className="w-3.5 h-3.5" /> Concierge
+          <Phone className="w-3.5 h-3.5" /> Voice
+        </button>
+        <button
+          onClick={() => setActiveTab("content_pipeline")}
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
+            activeTab === "content_pipeline" ? "bg-teal-500/20 text-pink-300 border border-teal-500/30" : "text-slate-400"
+          }`}
+        >
+          <Video className="w-3.5 h-3.5" /> Content
+        </button>
+        <button
+          onClick={() => setActiveTab("data_pipeline")}
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
+            activeTab === "data_pipeline" ? "bg-teal-500/20 text-emerald-300 border border-teal-500/30" : "text-slate-400"
+          }`}
+        >
+          <BrainCircuit className="w-3.5 h-3.5" /> Data AI
+        </button>
+        <button
+          onClick={() => setActiveTab("agent_rag")}
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
+            activeTab === "agent_rag" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
+          }`}
+        >
+          <Wrench className="w-3.5 h-3.5" /> Tools & RAG
         </button>
         <button
           onClick={() => setActiveTab("pricing")}
-          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
             activeTab === "pricing" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
           }`}
         >
@@ -172,22 +291,15 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
         <button
           onClick={() => setActiveTab("booking")}
-          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap px-2 ${
             activeTab === "booking" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
           }`}
         >
-          Tracking
-        </button>
-        <button
-          onClick={() => setActiveTab("sop")}
-          className={`flex-1 py-1.5 text-center text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
-            activeTab === "sop" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" : "text-slate-400"
-          }`}
-        >
-          SOP
+          Track
         </button>
       </div>
     </header>
   );
 };
+
 

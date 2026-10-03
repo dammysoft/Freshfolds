@@ -3,6 +3,25 @@ import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  executeAgentTool,
+  searchRAGVectorDatabase,
+  FRESHCARE_RAG_DOCUMENTS,
+  BRAND_REP_PILLARS,
+  buildBrandRepresentativeSystemPrompt
+} from "./src/server/agentEngine";
+import {
+  FRESHCARE_CONTENT_IDEAS,
+  generateContentScript,
+  FRESHCARE_VOICE_CONFIGS,
+  generateCaptionTrack,
+  generateSocialPostBundle,
+  RAW_DIRTY_ORDERS_DATASET,
+  runDataCleaningPipeline,
+  computeCleanedAnalytics,
+  generateAIDataAnalysis,
+  generateBusinessRecommendations
+} from "./src/server/contentAndAnalyticsEngine";
 
 dotenv.config();
 
@@ -30,7 +49,7 @@ if (apiKey) {
 }
 
 const ALEX_SYSTEM_INSTRUCTION = `
-You are "Alex", the warm, professional, respectful, and sharp front-desk voice concierge for Freshfolds Laundry and Dry Cleaning Service, located in Ikorodu, Lagos, Nigeria (serving Firstgate, LASUSTECH, Agric, Benson, Ikorodu Garage, and surrounding environs).
+You are "Alex", the warm, professional, respectful, and sharp front-desk voice concierge for Freshcare Laundry and Drycleaning Services, located in Ikorodu, Lagos, Nigeria (serving Firstgate, LASUSTECH, Agric, Benson, Ikorodu Garage, and surrounding environs).
 Your voice persona is natural, conversational, friendly, and reassuring with a welcoming Nigerian hospitality warmth. Speak with an organized tone that reassures callers their everyday clothes, traditional attire (Senators, Kaftans, Agbadas, Ankara, Aso-Oke), suits, and household linens are in expert hands.
 
 # Business Location & Operational Details:
@@ -40,9 +59,9 @@ Your voice persona is natural, conversational, friendly, and reassuring with a w
   * Monday – Friday: 7:00 AM – 8:00 PM (Peak hours: 7:00 AM – 9:00 AM & 5:00 PM – 8:00 PM)
   * Saturday: 7:00 AM – 7:00 PM (Walk-in & major pickup day)
   * Sunday: 9:00 AM – 4:00 PM (Delivery & advance orders)
-- Quality Guarantee (Freshfolds Standard Operating Procedure):
+- Quality Guarantee (Freshcare Standard Operating Procedure):
   * Strict no-mix rule: No two customers' clothes are EVER washed in the same batch.
-  * Tagging & Photo-Documentation: Every item is tagged (FF-001 series) and photo-documented on WhatsApp upon receipt.
+  * Tagging & Photo-Documentation: Every item is tagged (FC-001 series) and photo-documented on WhatsApp upon receipt.
   * Delicates (silk, lace, chiffon, beaded gowns) are ALWAYS hand-washed with zero harsh chemicals.
   * Professional starching options: Light starch (everyday shirts & blouses), Medium starch (kaftans, office wear), Heavy starch (Agbadas, ceremonial wear, uniforms). Starch is never used on silk or chiffon.
   * Standard Turnaround: 24 to 48 hours.
@@ -119,7 +138,7 @@ When responding, ALWAYS return valid JSON matching this schema:
 
 function getFallbackResponse(userMessage: string, bookingState: any) {
   const lower = userMessage.toLowerCase();
-  let reply = "Hello and welcome to Freshfolds Laundry in Ikorodu! I'm Alex. How can we take care of your laundry or traditional wear today?";
+  let reply = "Hello and welcome to Freshcare Laundry and Drycleaning Services in Ikorodu! I'm Alex. How can we take care of your laundry or traditional wear today?";
   let serviceType = bookingState?.serviceType || "everyday";
   let isPickup = bookingState?.isPickup ?? true;
   let bookingStatus = bookingState?.bookingStatus || "inquiry";
@@ -151,7 +170,7 @@ function getFallbackResponse(userMessage: string, bookingState: any) {
     reply = "That window is open on our Ikorodu dispatch route. To lock your slot in, please give me your name, phone number, and address or landmark around Ikorodu.";
     bookingStatus = "details_needed";
   } else {
-    reply = "Freshfolds handles everyday wear, crisp native attire, and dry cleaning right here in Ikorodu. Plus, if your first order of clothes exceeds fifteen pieces, you receive one thousand five hundred Naira off! What can we refresh for you today?";
+    reply = "Freshcare handles everyday wear, crisp native attire, and dry cleaning right here in Ikorodu. Plus, if your first order of clothes exceeds fifteen pieces, you receive one thousand five hundred Naira off! What can we refresh for you today?";
   }
 
   return {
@@ -231,6 +250,12 @@ app.post("/api/chat", async (req: Request, res: Response) => {
     let alexResponse = "";
     let extracted = currentBookingState || {};
 
+    // Retrieve grounded knowledge chunks via RAG
+    const ragMatches = await searchRAGVectorDatabase(lastUserMessage, 2, ai);
+    const ragContext = ragMatches
+      .map((m) => `[RAG Doc: ${m.document.title}] ${m.matchedSnippets.join(" ")}`)
+      .join("\n");
+
     if (ai) {
       try {
         const formattedContents = messages.map((m: any) => ({
@@ -238,7 +263,7 @@ app.post("/api/chat", async (req: Request, res: Response) => {
           parts: [{ text: m.content }],
         }));
 
-        const contextNote = `\n\n[Current Booking State: ${JSON.stringify(currentBookingState || {})}]`;
+        const contextNote = `\n\n[Retrieved Freshcare RAG Knowledge:\n${ragContext || "Freshcare standard pricing in Naira"}]\n[Current Booking State: ${JSON.stringify(currentBookingState || {})}]`;
         if (formattedContents.length > 0) {
           const lastTurn = formattedContents[formattedContents.length - 1];
           lastTurn.parts[0].text += contextNote;
@@ -321,12 +346,220 @@ app.post("/api/tts", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/tools/execute: Real-time execution of the 7 AI Agent Tools
+app.post("/api/tools/execute", (req: Request, res: Response) => {
+  try {
+    const { tool, args = {} } = req.body;
+    if (!tool) {
+      res.status(400).json({ error: "Missing required 'tool' parameter" });
+      return;
+    }
+
+    const { result, latencyMs } = executeAgentTool(tool, args);
+    res.json({
+      success: true,
+      tool,
+      args,
+      result,
+      latencyMs,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    console.error("Error executing agent tool:", err);
+    res.status(500).json({ error: err.message || "Tool execution failed" });
+  }
+});
+
+// POST /api/rag/search: Semantic RAG retrieval over Freshcare vector store
+app.post("/api/rag/search", async (req: Request, res: Response) => {
+  try {
+    const { query, limit = 3 } = req.body;
+    if (!query || typeof query !== "string") {
+      res.status(400).json({ error: "Missing or invalid 'query' parameter" });
+      return;
+    }
+
+    const start = Date.now();
+    const results = await searchRAGVectorDatabase(query, Number(limit), ai);
+    const searchLatencyMs = Date.now() - start;
+
+    res.json({
+      success: true,
+      query,
+      results,
+      count: results.length,
+      searchLatencyMs,
+      embeddingModelUsed: ai ? "gemini-embedding-2-preview" : "deterministic-tfidf-128",
+    });
+  } catch (err: any) {
+    console.error("Error in /api/rag/search:", err);
+    res.status(500).json({ error: err.message || "RAG search failed" });
+  }
+});
+
+// GET /api/rag/documents: Returns the indexed RAG knowledge documents
+app.get("/api/rag/documents", (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    totalDocuments: FRESHCARE_RAG_DOCUMENTS.length,
+    documents: FRESHCARE_RAG_DOCUMENTS,
+    vectorDimensions: 128,
+  });
+});
+
+// GET /api/brand-representative: Returns the 5-pillar persona synthesis
+app.get("/api/brand-representative", (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    representativeName: "Alex",
+    role: "AI Brand Representative & Voice Concierge",
+    pillars: BRAND_REP_PILLARS,
+    systemInstruction: buildBrandRepresentativeSystemPrompt(),
+  });
+});
+
+// =========================================================================
+// PIPELINE 2 API: Idea -> AI script -> AI voice -> Video -> Captions -> Thumbnail -> Social post -> Publish
+// =========================================================================
+
+// GET /api/content/ideas: Returns Freshcare viral content ideas library
+app.get("/api/content/ideas", (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    count: FRESHCARE_CONTENT_IDEAS.length,
+    ideas: FRESHCARE_CONTENT_IDEAS,
+    voices: FRESHCARE_VOICE_CONFIGS,
+  });
+});
+
+// POST /api/content/generate-script: Generates video script from idea
+app.post("/api/content/generate-script", async (req: Request, res: Response) => {
+  try {
+    const { idea, customNotes } = req.body;
+    if (!idea) {
+      res.status(400).json({ error: "Missing 'idea' in request body" });
+      return;
+    }
+    const script = await generateContentScript(idea, customNotes, ai);
+    res.json({ success: true, script });
+  } catch (err: any) {
+    console.error("Error generating content script:", err);
+    res.status(500).json({ error: err.message || "Script generation failed" });
+  }
+});
+
+// POST /api/content/generate-captions: Generates animated captions & hashtags from script
+app.post("/api/content/generate-captions", (req: Request, res: Response) => {
+  try {
+    const { script } = req.body;
+    if (!script || !script.scenes) {
+      res.status(400).json({ error: "Missing valid 'script' object" });
+      return;
+    }
+    const captionTrack = generateCaptionTrack(script);
+    res.json({ success: true, captionTrack });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Caption generation failed" });
+  }
+});
+
+// POST /api/content/generate-social-posts: Creates formatted multi-platform posts
+app.post("/api/content/generate-social-posts", (req: Request, res: Response) => {
+  try {
+    const { script } = req.body;
+    if (!script) {
+      res.status(400).json({ error: "Missing 'script' in request body" });
+      return;
+    }
+    const posts = generateSocialPostBundle(script);
+    res.json({ success: true, posts });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Social post generation failed" });
+  }
+});
+
+// =========================================================================
+// PIPELINE 3 API: Orders -> Database -> Data cleaning -> Analytics -> Dashboard -> AI analysis -> Recommendations
+// =========================================================================
+
+// GET /api/analytics/raw-orders: Returns raw dirty orders
+app.get("/api/analytics/raw-orders", (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    count: RAW_DIRTY_ORDERS_DATASET.length,
+    rawOrders: RAW_DIRTY_ORDERS_DATASET,
+  });
+});
+
+// POST /api/analytics/clean-data: Executes real data cleaning pipeline
+app.post("/api/analytics/clean-data", (req: Request, res: Response) => {
+  try {
+    const { rawOrders = RAW_DIRTY_ORDERS_DATASET } = req.body;
+    const cleaningResult = runDataCleaningPipeline(rawOrders);
+    res.json({
+      success: true,
+      ...cleaningResult,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Data cleaning failed" });
+  }
+});
+
+// POST /api/analytics/compute-metrics: Computes statistical metrics from cleaned orders
+app.post("/api/analytics/compute-metrics", (req: Request, res: Response) => {
+  try {
+    const { cleanedOrders } = req.body;
+    const ordersToUse = cleanedOrders && cleanedOrders.length > 0 
+      ? cleanedOrders 
+      : runDataCleaningPipeline(RAW_DIRTY_ORDERS_DATASET).cleanedOrders;
+    const analytics = computeCleanedAnalytics(ordersToUse);
+    res.json({ success: true, analytics });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Metrics computation failed" });
+  }
+});
+
+// POST /api/analytics/ai-analysis: Performs AI deep pattern analysis
+app.post("/api/analytics/ai-analysis", async (req: Request, res: Response) => {
+  try {
+    const { analytics } = req.body;
+    const analyticsToUse = analytics || computeCleanedAnalytics(runDataCleaningPipeline(RAW_DIRTY_ORDERS_DATASET).cleanedOrders);
+    const insights = await generateAIDataAnalysis(analyticsToUse, ai);
+    res.json({ success: true, insights });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "AI data analysis failed" });
+  }
+});
+
+// POST /api/analytics/recommendations: Generates prioritized strategic recommendations
+app.post("/api/analytics/recommendations", (req: Request, res: Response) => {
+  try {
+    const { insights, analytics } = req.body;
+    const analyticsToUse = analytics || computeCleanedAnalytics(runDataCleaningPipeline(RAW_DIRTY_ORDERS_DATASET).cleanedOrders);
+    const defaultInsights = [
+      {
+        id: "insight-1",
+        title: "Friday Pre-Owanbe Agbada & Native Spike (High Margin Opportunity)",
+        severity: "opportunity" as const,
+        summary: "Traditional wear and ceremonial Agbada account for 41% of total revenue.",
+        detectedPattern: "Customers submitting Agbadas on Friday morning consistently pay higher ticket values.",
+        supportingData: "Average revenue per native order is ₦8,300 vs ₦4,800 for everyday wash.",
+        potentialImpact: "+₦180,000/month with dedicated Friday rush window.",
+      }
+    ];
+    const recs = generateBusinessRecommendations(insights || defaultInsights, analyticsToUse);
+    res.json({ success: true, recommendations: recs });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Recommendations generation failed" });
+  }
+});
+
 // GET /api/health
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({
     status: "ok",
     hasApiKey: !!process.env.GEMINI_API_KEY,
-    concierge: "Alex - Freshfolds Front Desk Concierge (Ikorodu, Lagos)",
+    concierge: "Alex - Freshcare Front Desk Concierge (Ikorodu, Lagos)",
     currency: "NGN (₦)",
     models: {
       dialogue: "gemini-3.8-flash",
@@ -351,6 +584,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.listen(Number(PORT), "0.0.0.0", () => {
-  console.log(`Freshfolds Ikorodu Concierge Server running on http://0.0.0.0:${PORT}`);
+  console.log(`Freshcare Ikorodu Concierge Server running on http://0.0.0.0:${PORT}`);
 });
 

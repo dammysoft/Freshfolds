@@ -48,7 +48,7 @@ const STAGES: StageDefinition[] = [
       "Garments collected from doorstep or received at Firstgate facility. Items counted, inspected for pre-existing defects, and tagged with durable waterproof labels.",
     checklist: [
       "Physical piece count verified against booking slip",
-      "Sequential waterproof tag attached (FF series)",
+      "Sequential waterproof tag attached (FC series)",
       "WhatsApp photo-documentation timestamped",
       "Pockets cleared & zip/button check completed",
     ],
@@ -84,7 +84,7 @@ const STAGES: StageDefinition[] = [
       "Spot inspection: Collars, cuffs, and underarms 100% clean",
       "Starch calibration applied per customer preference",
       "High-pressure steam iron: Sharp crease lines for Senators",
-      "Garments cooled & folded to FreshFold exact standard",
+      "Garments cooled & folded to Freshcare exact standard",
     ],
     handler: "Senior QC Inspector · Pressing Station 1",
   },
@@ -96,7 +96,7 @@ const STAGES: StageDefinition[] = [
     sopCode: "SOP-7.3 Dispatch & Handover",
     leadTime: "Day 2 · Afternoon",
     description:
-      "Packed inside Freshfolds waterproof protective garment bag. Dispatched with route rider across Ikorodu (Firstgate, Agric, Benson, Garage).",
+      "Packed inside Freshcare waterproof protective garment bag. Dispatched with route rider across Ikorodu (Firstgate, Agric, Benson, Garage).",
     checklist: [
       "Final piece tally verified against order manifest",
       "Branded breathable garment protective cover sealed",
@@ -161,9 +161,9 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
           <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
             <span className="font-semibold text-emerald-400">Live Garment Tracking</span>
             <span aria-hidden="true">·</span>
-            <span>Tag #{bookingState.tagNumber || "FF-001"}</span>
+            <span>Tag #{bookingState.tagNumber || "FC-001"}</span>
             <span aria-hidden="true">·</span>
-            <span>Ref: {bookingState.bookingReference || "FF-IKD-201"}</span>
+            <span>Ref: {bookingState.bookingReference || "FC-IKD-201"}</span>
           </div>
           <h3 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
             <span>Order Processing Lifecycle</span>

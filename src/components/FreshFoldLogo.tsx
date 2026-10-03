@@ -50,7 +50,7 @@ export const FreshFoldLogo: React.FC<FreshFoldLogoProps> = ({
           </span>
         </div>
 
-        {/* The Exact FreshFold Feasibility Report Typography */}
+        {/* The Exact Freshcare Feasibility Report Typography */}
         <div className="flex flex-col leading-tight">
           <div className="flex items-baseline gap-1">
             <span
@@ -70,7 +70,7 @@ export const FreshFoldLogo: React.FC<FreshFoldLogoProps> = ({
                 letterSpacing: "-0.02em",
               }}
             >
-              FRESH<span className="text-teal-400">FOLD</span>
+              FRESH<span className="text-teal-400">CARE</span>
             </span>
           </div>
 
@@ -88,7 +88,7 @@ export const FreshFoldLogo: React.FC<FreshFoldLogoProps> = ({
               fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
             }}
           >
-            LAUNDRY & DRY CLEANING SERVICES
+            LAUNDRY & DRYCLEANING SERVICES
           </span>
         </div>
       </div>
@@ -96,13 +96,17 @@ export const FreshFoldLogo: React.FC<FreshFoldLogoProps> = ({
       {showTagline && (
         <div className="mt-1.5 flex flex-col">
           <span className="text-xs italic text-teal-300 font-medium">
-            "You handle life. We handle the laundry."
+            "Every fold tells you we care. You handle life. We handle the laundry."
           </span>
           <span className="text-[10px] text-slate-400 tracking-wide mt-0.5">
-            Every fold tells you we care. · Firstgate, LASUSTECH, Ikorodu
+            CAC Registered · Firstgate, LASUSTECH, Ikorodu, Lagos
           </span>
         </div>
       )}
     </div>
   );
 };
+
+// Aliases for seamless backwards and forwards compatibility
+export const FreshcareLogo = FreshFoldLogo;
+

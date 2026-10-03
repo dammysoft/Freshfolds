@@ -586,7 +586,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20">
-              Freshfolds Official Fixed Pricing (₦)
+              Freshcare Official Fixed Pricing (₦)
             </span>
             <span className="text-xs text-slate-400">• Ikorodu, Lagos Branch</span>
           </div>

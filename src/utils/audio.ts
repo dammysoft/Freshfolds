@@ -1,4 +1,4 @@
-// Audio helper utilities for Freshfolds Voice Concierge
+// Audio helper utilities for Freshcare Voice Concierge
 
 let currentAudio: HTMLAudioElement | null = null;
 

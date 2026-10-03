@@ -113,8 +113,8 @@ const QUICK_PROMPTS = [
     badge: "Eligibility Check",
   },
   {
-    label: "Track Order Status (Tag FF-001)",
-    text: "Hi Alex, what stage is my order Tag FF-001 currently in? Has it finished washing and quality check?",
+    label: "Track Order Status (Tag FC-001)",
+    text: "Hi Alex, what stage is my order Tag FC-001 currently in? Has it finished washing and quality check?",
     badge: "Live Tracking",
   },
 ];
@@ -180,7 +180,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
       playChime("connect");
 
       const greetingText =
-        "Hello and welcome to Freshfolds Laundry and Dry Cleaning here in Ikorodu! I'm Alex. How can we take care of your laundry, crisp native wear, or suits today?";
+        "Hello and welcome to Freshcare Laundry and Drycleaning Services here in Ikorodu! I'm Alex. How can we take care of your laundry, crisp native wear, or suits today?";
 
       const greetingMessage: ChatMessage = {
         id: `alex-init-${Date.now()}`,
@@ -284,7 +284,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
       const data = await response.json();
       const alexReply =
         data.alexResponse ||
-        "I'm right here! Freshfolds Ikorodu takes care of your clothes and traditional wear, plus ₦1,500 off your first order of clothes if you bring over 15 pieces.";
+        "I'm right here! Freshcare Ikorodu takes care of your clothes and traditional wear, plus ₦1,500 off your first order of clothes if you bring over 15 pieces.";
 
       if (data.extracted) {
         setBookingState((prev) => {
@@ -294,8 +294,8 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
           }
           if (data.extracted.bookingStatus === "confirmed" && !updated.bookingReference) {
             const randomId = Math.floor(100 + Math.random() * 900);
-            updated.bookingReference = `FF-IKD-${randomId}`;
-            updated.tagNumber = `FF-${randomId}`;
+            updated.bookingReference = `FC-IKD-${randomId}`;
+            updated.tagNumber = `FC-${randomId}`;
             updated.driverSlot = "Ikorodu Dispatch Dispatcher #02 (Agric/Firstgate Route)";
           }
           return updated;
@@ -332,7 +332,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
     } catch (err) {
       console.error("Error communicating with Alex:", err);
       const fallbackReply =
-        "Freshfolds Ikorodu handles everyday wear, native attire, and duvets with free delivery within one kilometer of LASUSTECH Firstgate. How can I assist you with your booking?";
+        "Freshcare Ikorodu handles everyday wear, native attire, and duvets with free delivery within one kilometer of LASUSTECH Firstgate. How can I assist you with your booking?";
 
       const errorMsg: ChatMessage = {
         id: `alex-err-${Date.now()}`,
@@ -445,14 +445,14 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
               <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-1.5">
                 Alex
                 <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                  Freshfolds Concierge • Ikorodu
+                  Freshcare Concierge • Ikorodu
                 </span>
               </h2>
             </div>
             <div className="text-xs text-slate-400 flex items-center gap-2">
               {isConnecting ? (
                 <span className="text-amber-400 flex items-center gap-1 animate-pulse">
-                  <Radio className="w-3.5 h-3.5" /> Dialing Freshfolds Ikorodu Desk...
+                  <Radio className="w-3.5 h-3.5" /> Dialing Freshcare Ikorodu Desk...
                 </span>
               ) : isCallActive ? (
                 <span className="text-emerald-400 flex items-center gap-2 font-mono">
@@ -636,7 +636,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
               ) : isCallActive ? (
                 <span className="text-slate-300">Alex is listening. Tap mic or ask a question below!</span>
               ) : (
-                <span className="text-slate-400">Click &quot;Call Alex&quot; to speak directly with Freshfolds</span>
+                <span className="text-slate-400">Click &quot;Call Alex&quot; to speak directly with Freshcare</span>
               )}
             </div>
           </div>
@@ -678,7 +678,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
               <Phone className="w-8 h-8 animate-pulse" />
             </div>
             <h3 className="text-lg font-bold text-white mb-2">
-              Freshfolds Ikorodu Voice Concierge
+              Freshcare Ikorodu Voice Concierge
             </h3>
             <p className="text-xs text-slate-400 mb-5 leading-relaxed">
               Alex is ready to answer questions about everyday wear, Senator & Agbada custom starching,
@@ -722,7 +722,7 @@ export const VoiceCallConsole: React.FC<VoiceCallConsoleProps> = ({
                 >
                   <div className="flex items-center justify-between gap-3 mb-1 text-[11px] opacity-70">
                     <span className="font-semibold">
-                      {isAlex ? "Alex (Freshfolds Ikorodu Concierge)" : "You (Caller)"}
+                      {isAlex ? "Alex (Freshcare Ikorodu Concierge)" : "You (Caller)"}
                     </span>
                     <span>{message.timestamp}</span>
                   </div>

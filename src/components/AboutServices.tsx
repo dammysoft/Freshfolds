@@ -27,16 +27,16 @@ export const AboutServices: React.FC<AboutServicesProps> = ({ onStartCall }) => 
       <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/40 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
         <div className="max-w-3xl relative z-10">
           <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20 mb-3 inline-block">
-            Freshfold Standard Operating Procedure (SOP)
+            Freshcare Standard Operating Procedure (SOP)
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
             Professional Laundry & Dry Cleaning Standards
           </h2>
           <p className="text-xs text-emerald-400 font-mono mb-4">
-            Firstgate, near LASUSTECH, Ikorodu, Lagos • Document Ref: SOP-FF-2026
+            Firstgate, near LASUSTECH, Ikorodu, Lagos • Document Ref: SOP-FC-2026
           </p>
           <p className="text-sm text-slate-300 leading-relaxed mb-6">
-            Freshfolds operates under strict institutional procedures for washing, pressing, starching,
+            Freshcare operates under strict institutional procedures for washing, pressing, starching,
             packaging, and fabric handling. We combine commercial-grade destainers with careful hand-washing
             for delicate traditional attire like Agbadas, Aso-Oke, and Kaftans.
           </p>
@@ -114,10 +114,10 @@ export const AboutServices: React.FC<AboutServicesProps> = ({ onStartCall }) => 
               <li>Count all items physically in front of customer.</li>
               <li>Inspect for stains, tears, missing buttons, or damages.</li>
               <li>Confirm requested service: Wash Only, Wash + Press, Press Only, or Starch level.</li>
-              <li><strong className="text-amber-300">Tag every garment immediately (FF-001, FF-002...).</strong></li>
+              <li><strong className="text-amber-300">Tag every garment immediately (FC-001, FC-002...).</strong></li>
               <li>Separate whites, colours, darks, and delicate fabrics.</li>
               <li>Photo-document items on receipt using WhatsApp and issue digital receipt.</li>
-              <li>Fold garments uniformly in branded Freshfold bag with customer tag attached.</li>
+              <li>Fold garments uniformly in branded Freshcare bag with customer tag attached.</li>
             </ul>
           </div>
 
@@ -165,7 +165,7 @@ export const AboutServices: React.FC<AboutServicesProps> = ({ onStartCall }) => 
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Every delivery package includes a FreshFold branded bag.</span>
+                <span>Every delivery package includes a Freshcare branded bag.</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
@@ -378,7 +378,7 @@ export const AboutServices: React.FC<AboutServicesProps> = ({ onStartCall }) => 
               </div>
               <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2">
                 <span className="font-mono text-emerald-400 font-bold">Step 2:</span>
-                <span>Items counted, inspected & tagged (FF-001, FF-002...) on receipt.</span>
+                <span>Items counted, inspected & tagged (FC-001, FC-002...) on receipt.</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2">
                 <span className="font-mono text-emerald-400 font-bold">Step 3:</span>
@@ -398,11 +398,11 @@ export const AboutServices: React.FC<AboutServicesProps> = ({ onStartCall }) => 
               </div>
               <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2">
                 <span className="font-mono text-emerald-400 font-bold">Step 7:</span>
-                <span>Pressing and folding — standard FreshFold fold (within 4–6 hours).</span>
+                <span>Pressing and folding — standard Freshcare crisp fold (within 4–6 hours).</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2">
                 <span className="font-mono text-emerald-400 font-bold">Step 8:</span>
-                <span>Packaging — branded FreshFold bag, customer tag attached.</span>
+                <span>Packaging — branded Freshcare bag, customer tag attached.</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2">
                 <span className="font-mono text-emerald-400 font-bold">Step 9:</span>

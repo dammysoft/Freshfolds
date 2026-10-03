@@ -5,11 +5,19 @@ import { BookingBoard } from "./components/BookingBoard";
 import { PricingCalculator } from "./components/PricingCalculator";
 import { AboutServices } from "./components/AboutServices";
 import { WebsiteOverview } from "./components/WebsiteOverview";
-import { FreshFoldLogo } from "./components/FreshFoldLogo";
+import { FreshcareLogo, FreshFoldLogo } from "./components/FreshFoldLogo";
+import { BusinessDashboard } from "./components/BusinessDashboard";
+import { OrderFunnelWizard } from "./components/OrderFunnelWizard";
+import { WhatsAppAgentFlow } from "./components/WhatsAppAgentFlow";
+import { AgentToolsAndRAGConsole } from "./components/AgentToolsAndRAGConsole";
+import { ContentMarketingStudio } from "./components/ContentMarketingStudio";
+import { DataAnalyticsPipeline } from "./components/DataAnalyticsPipeline";
 import { ChatMessage, BookingState } from "./types";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<"overview" | "call" | "booking" | "pricing" | "sop">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "funnel" | "whatsapp_agent" | "agent_rag" | "content_pipeline" | "data_pipeline" | "call" | "booking" | "pricing" | "sop" | "dashboard"
+  >("overview");
   const [isCallActive, setIsCallActive] = useState<boolean>(false);
 
   // Booking state extracted by Alex in Ikorodu, Lagos
@@ -35,7 +43,7 @@ export default function App() {
     bookingStatus: "inquiry",
     orderStage: "in_washing",
     stageLastUpdated: "Today · 11:30 AM",
-    tagNumber: "FF-001",
+    tagNumber: "FC-001",
     driverSlot: "Ikorodu Dispatch Dispatcher #02 (Agric/Firstgate Route)",
   });
 
@@ -122,6 +130,54 @@ export default function App() {
             onOpenPricing={() => setActiveTab("pricing")}
             onOpenTracker={() => setActiveTab("booking")}
             onOpenSop={() => setActiveTab("sop")}
+            onOpenDashboard={() => setActiveTab("dashboard")}
+            onOpenOrderFunnel={() => setActiveTab("funnel")}
+            onOpenWhatsAppFlow={() => setActiveTab("whatsapp_agent")}
+            onOpenAgentRAG={() => setActiveTab("agent_rag")}
+            onOpenContentPipeline={() => setActiveTab("content_pipeline")}
+            onOpenDataPipeline={() => setActiveTab("data_pipeline")}
+          />
+        )}
+
+        {activeTab === "funnel" && (
+          <OrderFunnelWizard
+            bookingState={bookingState}
+            setBookingState={setBookingState}
+            onOpenTracker={() => setActiveTab("booking")}
+            onOpenDashboard={() => setActiveTab("dashboard")}
+          />
+        )}
+
+        {activeTab === "whatsapp_agent" && (
+          <WhatsAppAgentFlow
+            bookingState={bookingState}
+            setBookingState={setBookingState}
+            onOpenOrderFunnel={() => setActiveTab("funnel")}
+            onOpenDashboard={() => setActiveTab("dashboard")}
+          />
+        )}
+
+        {activeTab === "agent_rag" && (
+          <AgentToolsAndRAGConsole
+            bookingState={bookingState}
+            setBookingState={setBookingState}
+            onOpenCall={() => setActiveTab("call")}
+            onOpenWhatsApp={() => setActiveTab("whatsapp_agent")}
+          />
+        )}
+
+        {activeTab === "content_pipeline" && (
+          <ContentMarketingStudio
+            onOpenOrderFunnel={() => setActiveTab("funnel")}
+            onOpenWhatsAppFlow={() => setActiveTab("whatsapp_agent")}
+          />
+        )}
+
+        {activeTab === "data_pipeline" && (
+          <DataAnalyticsPipeline
+            onOpenPricingTab={() => setActiveTab("pricing")}
+            onOpenTrackerTab={() => setActiveTab("booking")}
+            onOpenCallTab={handleCallAlexClick}
           />
         )}
 
@@ -156,13 +212,21 @@ export default function App() {
         {activeTab === "sop" && (
           <AboutServices onStartCall={handleCallAlexClick} />
         )}
+
+        {activeTab === "dashboard" && (
+          <BusinessDashboard
+            onOpenCallTab={handleCallAlexClick}
+            onOpenPricingTab={() => setActiveTab("pricing")}
+            onOpenTrackerTab={() => setActiveTab("booking")}
+          />
+        )}
       </main>
 
       {/* Footer Featuring Feasibility Report Credentials */}
       <footer className="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-400">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-slate-850">
-            <FreshFoldLogo size="md" showTagline={true} />
+            <FreshcareLogo size="md" showTagline={true} />
 
             <div className="flex flex-wrap gap-4 text-xs">
               <button
@@ -170,6 +234,30 @@ export default function App() {
                 className="hover:text-teal-400 transition-colors cursor-pointer"
               >
                 Website Overview
+              </button>
+              <button
+                onClick={() => setActiveTab("funnel")}
+                className="hover:text-teal-400 text-teal-300 font-semibold transition-colors cursor-pointer"
+              >
+                Order Funnel (8 Steps)
+              </button>
+              <button
+                onClick={() => setActiveTab("whatsapp_agent")}
+                className="hover:text-teal-400 text-emerald-300 font-semibold transition-colors cursor-pointer"
+              >
+                WhatsApp AI Agent
+              </button>
+              <button
+                onClick={() => setActiveTab("agent_rag")}
+                className="hover:text-teal-400 text-emerald-300 font-semibold transition-colors cursor-pointer"
+              >
+                7 Agent Tools & RAG
+              </button>
+              <button
+                onClick={() => setActiveTab("dashboard")}
+                className="hover:text-teal-400 text-teal-300 font-semibold transition-colors cursor-pointer"
+              >
+                Business CRM & Dashboard
               </button>
               <button
                 onClick={() => setActiveTab("call")}
@@ -202,7 +290,7 @@ export default function App() {
             <div>
               <span>Founder: Azeez Saheed Oluwadamilola (Dammy)</span>
               <span className="mx-2">·</span>
-              <span>Firstgate, LASUSTECH (formerly Laspotech), Ikorodu, Lagos State</span>
+              <span>Freshcare Laundry and Drycleaning Services · Firstgate, LASUSTECH, Ikorodu, Lagos State</span>
             </div>
             <div>
               <span>Mon–Sat 7AM–8PM · Sun 9AM–4PM · WhatsApp Business First</span>

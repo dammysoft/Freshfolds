@@ -58,8 +58,8 @@ export const BookingBoard: React.FC<BookingBoardProps> = ({
     setBookingState((prev) => ({
       ...prev,
       bookingStatus: "confirmed",
-      bookingReference: prev.bookingReference || `FF-IKD-${randomId}`,
-      tagNumber: prev.tagNumber || `FF-${randomId}`,
+      bookingReference: prev.bookingReference || `FC-IKD-${randomId}`,
+      tagNumber: prev.tagNumber || `FC-${randomId}`,
       driverSlot: prev.driverSlot || "Ikorodu Dispatch Dispatcher #02 (Agric/Firstgate Route)",
     }));
     setShowReceiptModal(true);
@@ -72,7 +72,7 @@ export const BookingBoard: React.FC<BookingBoardProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20">
-              Freshfolds Ikorodu Operations
+              Freshcare Ikorodu Operations
             </span>
             <span className="text-xs text-slate-400">• Live Dispatch & Tagging Board</span>
           </div>
@@ -132,7 +132,7 @@ export const BookingBoard: React.FC<BookingBoardProps> = ({
                   <p className="text-xs text-slate-400">
                     {bookingState.isPickup
                       ? `Doorstep Pickup in ${bookingState.deliveryArea || "Ikorodu"}`
-                      : "Freshfolds Firstgate Facility Drop-off"}
+                      : "Freshcare Firstgate Facility Drop-off"}
                   </p>
                 </div>
               </div>
@@ -384,14 +384,14 @@ export const BookingBoard: React.FC<BookingBoardProps> = ({
 
             <div className="mt-4 p-2.5 rounded-xl bg-slate-950/70 border border-amber-500/20 text-[11px] text-slate-400 flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Zero-risk guarantee: Pay only after inspecting your garments. Branded Freshfold bag included!</span>
+              <span>Zero-risk guarantee: Pay only after inspecting your garments. Branded Freshcare bag included!</span>
             </div>
           </div>
 
           {/* Quick Support / Contact Information */}
           <div className="bg-slate-900/60 rounded-3xl border border-slate-800 p-5 space-y-3">
             <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-              Freshfolds Ikorodu Central Facility
+              Freshcare Ikorodu Central Facility
             </h4>
             <div className="text-xs space-y-2 text-slate-400">
               <div className="flex items-center justify-between">
@@ -433,11 +433,11 @@ export const BookingBoard: React.FC<BookingBoardProps> = ({
               <p className="text-xs text-slate-400 mt-1">
                 Booking Reference:{" "}
                 <span className="font-mono text-emerald-400 font-bold">
-                  {bookingState.bookingReference || "FF-IKD-201"}
+                  {bookingState.bookingReference || "FC-IKD-201"}
                 </span>{" "}
                 • Tag:{" "}
                 <span className="font-mono text-amber-300 font-bold">
-                  {bookingState.tagNumber || "FF-001"}
+                  {bookingState.tagNumber || "FC-001"}
                 </span>
               </p>
             </div>
